@@ -1,0 +1,63 @@
+# Regra II: Dispara automaticamente a cada alteração na branch master
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+  # 1. Instalar o SDK do .NET 8.0
+  - task: UseDotNet@2
+    displayName: '1. Instalar .NET 8.0 SDK'
+    inputs:
+      packageType: 'sdk'
+      version: '8.x'
+
+  # 2. Restaurar pacotes NuGet da Solução
+  - task: DotNetCoreCLI@2
+    displayName: '2. Dotnet Restore'
+    inputs:
+      command: 'restore'
+      projects: 'GuardianPet.sln'
+
+  # 3. Compilar a Aplicação (Build)
+  - task: DotNetCoreCLI@2
+    displayName: '3. Dotnet Build'
+    inputs:
+      command: 'build'
+      projects: 'GuardianPet.sln'
+      arguments: '--configuration $(buildConfiguration) --no-restore'
+
+  # 4. Regra VI: Executar Testes Automatizados (xUnit)
+  - task: DotNetCoreCLI@2
+    displayName: '4. Executar Testes Automatizados (xUnit)'
+    inputs:
+      command: 'test'
+      projects: 'GuardianPet.Tests.Unit/GuardianPet.Tests.Unit.csproj'
+      arguments: '--configuration $(buildConfiguration) --no-build'
+    env:
+      ConnectionStrings__OracleConnection: $(ConnectionStrings__OracleConnection)
+      Jwt__Key: $(Jwt__Key)
+
+  # 5. Gerar o pacote da API GuardianPet.csproj
+  - task: DotNetCoreCLI@2
+    displayName: '5. Empacotar API (Dotnet Publish)'
+    inputs:
+      command: 'publish'
+      publishWebProjects: false
+      projects: 'GuardianPet.csproj'
+      arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-build'
+      zipAfterPublish: true
+
+  # 6. Regra V: Publicar o Artefato no ambiente do Azure DevOps
+  - task: PublishBuildArtifacts@1
+    displayName: '6. Publicar Artefato no Azure DevOps'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
