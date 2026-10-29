@@ -106,22 +106,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("OracleConnection")
     );
 });
-
 builder.Services.AddMongoAudit(builder.Configuration);
-builder.Services.AddScoped<UserRepository>();
-builder.Services.AddScoped<PetRepository>();
-builder.Services.AddScoped<VeterinarianRepository>();
-builder.Services.AddScoped<ConsultationRepository>();
-builder.Services.AddScoped<IUserRepository>(provider => new AuditedUserRepository(
-    provider.GetRequiredService<UserRepository>(), provider.GetRequiredService<IAuditWriter>()));
-builder.Services.AddScoped<IPetRepository>(provider => new AuditedPetRepository(
-    provider.GetRequiredService<PetRepository>(), provider.GetRequiredService<IAuditWriter>()));
-builder.Services.AddScoped<IVeterinarianRepository>(provider => new AuditedVeterinarianRepository(
-    provider.GetRequiredService<VeterinarianRepository>(), provider.GetRequiredService<IAuditWriter>()));
-builder.Services.AddScoped<IConsultationRepository>(provider => new AuditedConsultationRepository(
-    provider.GetRequiredService<ConsultationRepository>(), provider.GetRequiredService<IAuditWriter>()));
-
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPetRepository, PetRepository>();
+builder.Services.AddScoped<IVeterinarianRepository, VeterinarianRepository>();
+builder.Services.AddScoped<IConsultationRepository, ConsultationRepository>();
 builder.Services.AddScoped<IPetService, PetService>();
 builder.Services.AddScoped<IVeterinarianService, VeterinarianService>();
 builder.Services.AddScoped<IConsultationService, ConsultationService>();
