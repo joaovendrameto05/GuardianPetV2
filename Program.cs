@@ -67,7 +67,6 @@ builder.Services.AddOpenTelemetry()
             .AddHttpClientInstrumentation()
             .AddSource(GuardianPetTelemetry.ServiceName);
 
-        
         if (builder.Environment.IsDevelopment())
         {
             tracing.AddConsoleExporter();
@@ -103,14 +102,18 @@ builder.Services.AddControllers()
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseOracle(
-        builder.Configuration.GetConnectionString("OracleConnection")
+        builder.Configuration.GetConnectionString("OracleConnection"),
+        oracleOptions => oracleOptions.UseOracleSQLCompatibility(OracleSQLCompatibility.DatabaseVersion19)
     );
 });
+
 builder.Services.AddMongoAudit(builder.Configuration);
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPetRepository, PetRepository>();
 builder.Services.AddScoped<IVeterinarianRepository, VeterinarianRepository>();
 builder.Services.AddScoped<IConsultationRepository, ConsultationRepository>();
+
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPetService, PetService>();
 builder.Services.AddScoped<IVeterinarianService, VeterinarianService>();
 builder.Services.AddScoped<IConsultationService, ConsultationService>();
