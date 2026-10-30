@@ -133,7 +133,7 @@ builder.Services.AddSwaggerGen(options =>
     });
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "GuardianPet API",
+        Title = "GuardianPet API - Deploy Automatico Sprint 4",
         Version = "v1",
         Description = "Veterinary management API developed with ASP.NET Core and Oracle Database"
     });
