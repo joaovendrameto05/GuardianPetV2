@@ -51,13 +51,13 @@ A aplicação utiliza **Entity Framework Core 8** para acesso aos dados e execu�
 
 ## Integrantes
 
-| RM | Integrante | Turma | Área de responsabilidade |
+| RM | Integrante | Turma |
 |---|---|---|---|
-| RM563665 | João Victor Vendrameto | `2TDSPV` | DevOps Tools, Cloud Computing, Compliance e QA |
-| RM566552 | Gabriel Ambrósio Saraiva | `2TDSPV` | Bancos de dados relacionais e não relacionais, IoT e IA |
-| RM561450 | Yuri Fuzinatto Garzoli Barreto | `2TDSPX` | Advanced Business Development with .NET |
-| RM562308 | Vinicius Romaguera Cardozo | `2TDSPX` | Java Advanced |
-| RM564205 | Nicolas de Oliveira Jacob | `2TDSPX` | Mobile Application Development |
+| RM563665 | João Victor Vendrameto | `2TDSPV` |
+| RM566552 | Gabriel Ambrósio Saraiva | `2TDSPV` |
+| RM561450 | Yuri Fuzinatto Garzoli Barreto | `2TDSPX` |
+| RM562308 | Vinicius Romaguera Cardozo | `2TDSPX` |
+| RM564205 | Nicolas de Oliveira Jacob | `2TDSPX` |
 
 ## Tecnologias e serviços
 
@@ -87,9 +87,10 @@ A aplicação utiliza **Entity Framework Core 8** para acesso aos dados e execu�
 
 O diagrama abaixo representa a comunicação entre o desenvolvedor, o GitHub, as pipelines do Azure DevOps, o Azure App Service, o Oracle Database e os usuários da API.
 
-![Diagrama da arquitetura e do fluxo CI/CD](docs/diagrama-arquitetura-cicd.png)
+![Diagrama da arquitetura e do fluxo CI/CD]
 
-```mermaid
+![alt text](image.png)
+
 flowchart LR
     DEV["Desenvolvedor<br/>VS Code / Git"] -->|"1. Git push na master"| GH["GitHub<br/>GuardianPetV2"]
     GH -->|"2. Aciona CI"| CI["Azure Pipelines<br/>Restore, Build, Test e Publish"]
